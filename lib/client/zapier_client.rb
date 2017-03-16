@@ -3,7 +3,7 @@ require 'httparty'
 require 'errors/zapier_api_error'
 
 module ZapierEmbeddedApi
-  # Api client
+  # HTTP Api Client
   class ZapierClient
     include HTTParty
 
@@ -14,8 +14,12 @@ module ZapierEmbeddedApi
       @api_token = api_token
     end
 
-    def templates
+    def templates(templates: nil, apps: nil)
       endpoint = "/zaps?key=#{@api_token}"
+
+      endpoint += '&templates=' + templates.join(',') if templates
+      endpoint += '&apps=' + apps.join(',') if apps
+
       response = self.class.get(endpoint, key: @api_token)
 
       process_response(response)
@@ -25,7 +29,6 @@ module ZapierEmbeddedApi
 
     def process_response(response)
       return response_error(response.code) unless response.code == 200
-
       JSON.parse(response.body)
     end
 
