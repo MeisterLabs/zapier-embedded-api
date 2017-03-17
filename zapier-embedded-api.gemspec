@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH.push(File.expand_path('../lib', __FILE__))
 require 'zapier_embedded_api/version'
 
@@ -16,7 +18,7 @@ Gem::Specification.new do |spec|
   )
   spec.require_path = 'lib'
 
-  spec.required_ruby_version = '>= 2'
+  spec.required_ruby_version = '>= 2.3'
 
   # dependencies
   spec.add_dependency('httparty', '~> 0.13')
