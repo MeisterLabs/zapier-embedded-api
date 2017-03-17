@@ -1,5 +1,6 @@
-require 'httparty'
+# frozen_string_literal: true
 
+require 'httparty'
 require 'errors/zapier_api_error'
 
 module ZapierEmbeddedApi
@@ -10,7 +11,8 @@ module ZapierEmbeddedApi
     base_uri 'https://zapier.com/partner/embed'
     headers 'Content-Type' => 'application/json'
 
-    def initialize(api_token)
+    def initialize(app_id:, api_token:)
+      @app_id = app_id
       @api_token = api_token
     end
 
@@ -29,7 +31,15 @@ module ZapierEmbeddedApi
 
     def process_response(response)
       return response_error(response.code) unless response.code == 200
-      JSON.parse(response.body)
+
+      apps = []
+      templates = JSON.parse(response.body)
+      templates.each do |template|
+        apps.concat(template.dig('steps')&.select { |step| step['id'] != @app_id })
+      end
+      apps.uniq! { |app| app['id'] }
+
+      [apps, templates]
     end
 
     def response_error(response_code)
