@@ -11,9 +11,11 @@ Add this to your Gemfile:
 
 ### Client initialization
 
-`client = ZapeirEmbeddedApi.get_client(<your api key>)`
+`client = ZapeirEmbeddedApi.get_client(app_id: <app_id>, api_token: <your api key>)`
+- `app_id` your Zapier app id - needed in order to filter out your app from the response
+- `api_token` your Zapier Ambedded API token
 
 ### Client methods
 
-#### `templates(apps:, templates:)`
-Return all templates linked to your app. The `apps` and `templates` parameters are optional.
+#### `[apps, templates] = templates(apps:, templates:)`
+Returns all the apps and templates linked to your app. The `apps` and `templates` parameters are optional.
