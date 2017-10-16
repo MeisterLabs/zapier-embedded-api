@@ -16,11 +16,12 @@ module ZapierEmbeddedApi
       @api_token = api_token
     end
 
-    def templates(templates: nil, apps: nil)
+    def templates(limit:, templates: nil, apps: nil)
       endpoint = "/zaps?key=#{@api_token}"
 
       endpoint += '&templates=' + templates.join(',') if templates
       endpoint += '&apps=' + apps.join(',') if apps
+      endpoint += '&limit=' + limit if limit
 
       response = self.class.get(endpoint, key: @api_token)
 
